@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>myChat Log In</title>
+    <script src = "/socket.io/socket.io.js"></script>
+    <script type = "text/javascript">
+        var socket = io.connect("127.0.0.1:2222");
+        var userName;
+        var password;
+        function signup(){
+            //socket.emit("sign up");
+            window.open('signup.html','_self');
+        }
+        function login() {
+            userName = document.getElementById("userid").value;
+            password = document.getElementById("pswd").value;
+            socket.emit("loginE", userName, password);
+            console.log(userName + " Connected");
+
+            socket.on("chat",function(ret_val){
+                if(ret_val == "true") {
+                    //socket.emit('uname',userName);
+                    window.open('client.html', '_self');
+
+                }
+                else {
+                    alert("Enter correct Credentials!!!");
+                }
+            });
+
+        }
+
+    </script>
+</head>
+<body>
+<h1>Log In</h1>
+
+    User Name : <input type = "text" id = "userid"/>
+    <br>
+    Password : <input type = "password" id = "pswd"/>
+    <br>
+    <input type = "button" onclick = "login()" value = "Log In" name = "Login">
+    <input type = "reset" value = "Cancel">
+    <br><br>
+
+<div class = "signup" style = "position: inherit;left: 600px;top: 20px;">
+    <button style = "position: relative;left: 600px;top: 20px;" onclick="signup()" value="Sign Up" name="signup"> Sign Up </button>
+</div>
+
+</body>
+</html>

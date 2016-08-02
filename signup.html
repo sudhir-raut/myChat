@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>My Chat Sign Up</title>
+    <script src = "/socket.io/socket.io.js"></script>
+    <script type = "text/javascript">
+        var socket = io.connect("127.0.0.1:2222");
+        function save() {
+            var userName = document.getElementById("uName").value;
+            var pwd1 = document.getElementById("pwd1").value;
+            var pwd2 = document.getElementById("pwd2").value;
+            if(pwd1 != pwd2)
+            {
+                alert("Password doesn't match!!!");
+                window.open('signup.html','_self');
+            }
+            else{
+                socket.emit("save",userName,pwd1);
+            }
+
+        }
+        socket.on("user exists",function (ret_val) {
+            if(ret_val == "true"){
+                alert("User already exists!!!");
+                window.open('signup.html','_self');
+            }
+            else {
+                alert("Successful Sign up!!!");
+                window.open('login.html','self');
+            }
+
+        });
+    </script>
+
+</head>
+<body>
+<div style = "position: inherit;top: 100px;left: 100px;">
+    <div style = "position: inherit;top: 20px;left: 100px;">User Name: <input type = "text" id = "uName"/></div>
+<br/>
+    <div style = "position: inherit;top: 40px;left: 100px">New Password:<input type = "password" id = "pwd1"></div>
+    <br/>
+    <div style = "position: inherit;top: 60px;left: 100px">Re-enter Password:<input type = "password" id = "pwd2"></div>
+    <br/>
+    <input type = "button" onclick = "save()" value = "Save" name = "save">
+</div>
+</body>
+</html>

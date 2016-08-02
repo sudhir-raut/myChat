@@ -1,0 +1,125 @@
+<html>
+<head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+
+        var socket = io.connect("127.0.0.1:2222");
+        var myName;
+        var onlineUsers;
+        var socketId;
+        socket.emit("uname");
+        socket.on("send_name",function(name){
+            myName = name;
+            document.getElementById("client").innerHTML =  ("<b style='color: coral'>"+myName+ "</b>"+document.getElementById("client").innerHTML);
+            document.getElementById("Pchat").innerHTML=("<input type='hidden' id='sender' value='' >"+document.getElementById("Pchat").innerHTML);
+            socket.emit("update");
+        });
+
+        socket.on("all_users",function (connectedUsers){
+            onlineUsers = connectedUsers;
+            document.getElementById("users").innerHTML = '';
+            for(var i = 0; i < connectedUsers.length; i++) {
+                if( connectedUsers[i] != null && connectedUsers[i].userName != myName) {
+                    document.getElementById("users").innerHTML = ( "<br />" +"<a onclick='privateMessage("+i+");' style='cursor: pointer;cursor: hand;'> <b style='color: darkgreen' id ='id"+i+"'>"+ connectedUsers[i].userName+"</b></a>" + document.getElementById("users").innerHTML);
+                }
+            }
+        } );
+
+        var msg;
+
+        function privateMessage(i){
+            var id = "id" + i;
+            var chatId="chat"+i;
+            var inputId="inputId"+i;
+            var privateUser = document.getElementById(id).innerText;
+            document.getElementById("Pchat").innerHTML=("<span id='close'>x</span>"+document.getElementById("Pchat").innerHTML)
+            if(document.getElementById("sender").value!=privateUser) {
+                document.getElementById("sender").innerHTML='';
+                socket.emit("create chat", myName, privateUser, i);
+            }
+        }
+
+        function sendMessage(){
+            var socketIdR = document.getElementById("socketIdR").value;
+            var socketIdS = document.getElementById("socketIdS").value;
+            var user = document.getElementById("sender").value;
+            var input=user;
+            var msg=document.getElementById(input).value;
+            document.getElementById(socketIdR).innerHTML = ('<div class="chat">' + "<b style='color: darkgreen'>"+ msg +"</b>"+ document.getElementById(socketIdR).innerHTML + '</div>');
+
+            socket.emit("send message",socketIdS,socketIdR,user,msg);
+
+        }
+
+        function close() {
+
+        }
+
+        socket.on("send socket id",function (socketIdR,socketIdS,reciever) {
+            document.getElementById("Pchat").innerHTML = ("<hr/><div><b style='color: maroon ;background-color: cadetblue;'>"+reciever + "</b><div id='"+socketIdR+"'></div><input type='text' id='"+reciever+"'/> <input type='hidden' id='socketIdS' value='"+socketIdS+"'/><input type='hidden' id='socketIdR' value='"+socketIdR+"'/><input type='hidden' id='sender' value='"+reciever+"'/><button onclick='sendMessage();'>Send</button><button onclick='close()'>Close</button></div>"+ document.getElementById("Pchat").innerHTML)
+        });
+
+        socket.on("get message",function(socketIdS,socketIdR,sender){
+            document.getElementById("Pchat").innerHTML = ("<hr/><div><b style='color: maroon ;background-color: cadetblue;'>"+sender + "</b><div id='"+socketIdS+"'></div><input type='text' id='"+sender+"'/><input type='hidden' id='socketIdS' value='"+socketIdR+"'/> <input type='hidden' id='socketIdR' value='"+socketIdS+"'/><input type='hidden' id='sender' value='"+sender+"'/><button onclick='sendMessage()'>Send</button><button onclick='close()'>Close</button></div>"+ document.getElementById("Pchat").innerHTML)
+
+        });
+
+
+        socket.on("get_message",function (recieverId,senderId,sender,msg) {
+            var chatId=senderId;
+            //document.getElementById("Pchat").innerHTML = ("<hr/><div><b style='color: maroon;background-color: cadetblue;'>"+sender + "</b><div id='chat"+ind+"'></div></div>"+ document.getElementById("Pchat").innerHTML)
+            document.getElementById(chatId).innerHTML = ('<div class="chat">' + "<b style='color: maroon'>"+ msg +"</b>"+ document.getElementById(chatId).innerHTML + '</div>');
+        });
+
+        function logout(){
+            socket.emit("logoutE",myName);
+            window.open('login.html','_self');
+        }
+        function sendM(){
+            var data = document.getElementById("msg_id").value;
+            socket.emit("msg_allE",data,myName);
+        }
+                socket.on("msg_all",function(data,userName) {
+                    if (userName == myName) {
+                        document.getElementById("chat").innerHTML = ('<div class="chat">' + "<hr/> Me : " + data + document.getElementById("chat").innerHTML) + '</div>'
+                    }
+                    else{
+                        document.getElementById("chat").innerHTML = ('<div class="chat">' + "<hr/>" + userName + " : " + data + document.getElementById("chat").innerHTML) + '</div>'
+                }
+        });
+    </script>
+</head>
+<body>
+
+<div class = "chat" style = "position: absolute;top: 600px;left: 470px;">
+    <center>
+        Message   :  <input style = "width: 300px;height: 30px;" type = "text" id = "msg_id"/>
+        <button onclick = "sendM()"> Send </button>
+        <button onclick = "logout()"> Logout </button>
+    </center>
+</div>
+
+<div style = "background-color: darkcyan; width: 100px;position: inherit;top: 20px;">
+    <div id = "client"></div>
+</div>
+
+<div style = "background-color: aquamarine;r: aquamarine;width: 100px;float: right">
+    <div><br /><b>Active Users</b></div>
+    <div id = "users"></div>
+</div>
+<center>
+    <div style="background-color: burlywood;position: absolute;top: 100px;left: 600px;width: 200px;">
+        <b>Personel Chat</b>
+        <div id = "Pchat"></div>
+
+    </div>
+</center>
+
+<div style = "background-color: antiquewhite;width: 200px;float: left">
+    <b>Chat</b>
+    <div id = "chat"></div>
+</div>
+
+
+</body>
+</html>

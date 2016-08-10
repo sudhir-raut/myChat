@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+    <head>
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <script src = "/socket.io/socket.io.js"></script>
+    <script type = "text/javascript">
+        var socket = io.connect("127.0.0.1:2222");
+        var userName;
+        var password;
+        function signup(){
+            //socket.emit("sign up");
+            window.open('signup.html','_self');
+        }
+        function login() {
+            userName = document.getElementById("username").value;
+            password = document.getElementById("pwd").value;
+            socket.emit("loginE", userName, password);
+            console.log(userName + " Connected");
+
+            socket.on("alert",function(alertMessage,ret_val){
+                if(ret_val == 1) {
+                    //socket.emit('uname',userName);
+                    window.open('home.html', '_self');
+
+                }
+                else {
+                    alert(alertMessage);
+                }
+            });
+
+        }
+
+    </script>
+</head>
+    <body>
+    <div class="header">
+        <div class="sub-header">
+        <h1>My Chat</h1>
+        </div>
+    </div>
+
+    <div class="login">
+        <div class="login1">
+            <h1 class="login-header">Log In here for chat</h1>
+            <div class="user">
+                <input type="text" id="username" placeholder="User Name">
+            </div>
+            <div class="password">
+                <input type="password" id="pwd" placeholder="Password">
+            </div>
+            <div>
+                <button type="submit" onclick="login()" value="Sign In">Sign In</button>
+            </div>
+            <div class="signup">
+                <a onclick="break"> Sign Up</a> for new account
+            </div>
+        </div>
+    </div>
+    </body>

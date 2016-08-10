@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+
+    <link rel="stylesheet" type="text/css" href="home.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="home.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+<div class="header">
+
+    <div class="sub-header">
+        <h1>My Chat</h1>
+    </div>
+    <div class="logout">
+        <div class="dropdown">
+            <div id="dropdown"></div>
+            <div class="menu">
+                <a href="profile.html">Profile</a>
+                <a onclick="logout()">Logout</a>
+            </div>
+
+        </div>
+        <!--<a onclick="">Log out</a> -->
+    </div>
+</div>
+<div>
+    <div class="online-users">
+        <div id="users">user</div>
+    </div>
+
+    <div class="timeline">
+        <input type="text" placeholder="Write something here..." id="msg_id">
+        <button onclick = "sendM()"> Send </button>
+        <div id="chat"></div>
+    </div>
+  <!--  <div class="profile">
+
+    </div>
+-->
+    </div>
+<div class="chat-bar">
+    <div id = "Pchat"></div>
+
+</div>
+
+</body>

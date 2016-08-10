@@ -1,0 +1,86 @@
+body {
+    background-image: url("background.jpg");
+}
+.header {
+    height: 100px;
+    background-color: azure;
+}
+.sub-header {
+    margin-left: 350px;
+    background-color: cornflowerblue;
+    border: 2px solid cornflowerblue;
+    border-radius: 15px;
+    height: 95px;
+    width: 600px;
+}
+
+h1 {
+    font-family: Garuda;
+    font-size: 50px;
+    color: azure;
+    text-align: center;
+    margin-top: inherit;
+
+}
+
+.signup {
+    margin-left: 350px;
+    margin-top: 10px;
+    background-color: gainsboro;
+    height: 300px;
+    width:600px;
+    border-radius: 15px;
+}
+
+.signup-header {
+    font-family: "Droid Sans Armenian";
+    font-size: 20px;
+    color: darkcyan;
+    text-align: center;
+}
+.signup1 {
+    padding-top: 50px;
+}
+
+.user {
+    margin-left: 150px;
+    margin-top: 10px;
+}
+.new-password1 {
+    margin-left: 150px;
+    margin-top: 10px;
+}
+.new-password2 {
+    margin-left: 150px;
+    margin-top: 10px;
+}
+
+input {
+    border-radius: 5px;
+    width: 300px;
+    height: 30px;
+    background-color: antiquewhite;
+}
+button {
+    width: 300px;
+    height: 35px;
+    border-radius: 5px;
+    background-color: cornflowerblue;
+    color: white;
+    margin-top: 10px;
+    margin-left: 150px;
+    cursor: pointer;
+    cursor: hand;
+}
+a {
+    cursor: pointer;
+    cursor: hand;
+    color: blue;
+    font-family: "Droid Sans Armenian";
+    padding-top: 50px;
+    margin-left: 200px;
+}
+.signup {
+    margin-top: 20px;
+}
+

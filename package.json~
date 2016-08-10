@@ -1,0 +1,11 @@
+{
+  "name": "myChat",
+  "version": "1.0.0",
+  "description":"This is sample chat Application",
+  "auther":"sudhir.raut@iauro.com",
+  "dependencies": {
+    "socket.io":"~3.10.3",
+    "express": "~4.13.4",
+"mongodb":"*"	
+  }
+}

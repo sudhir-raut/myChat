@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" type="text/css" href="signup.css">
+    <script src = "/socket.io/socket.io.js"></script>
+    <script src="signup.js" type = "text/javascript"></script>
+</head>
+<body>
+<div class="header">
+    <div class="sub-header">
+        <h1>My Chat</h1>
+    </div>
+</div>
+
+<div class="signup">
+    <div class="signup1">
+        <h1 class="signup-header">Sign Up for new account</h1>
+        <div class="user">
+            <input type="text" id="username" placeholder="User Name">
+        </div>
+        <div class="new-password1">
+            <input type="password" id="pwd1" placeholder="New Password">
+        </div>
+        <div class="new-password2">
+            <input type="password" id="pwd2" placeholder="Re-enter Password">
+        </div>
+
+        <div>
+            <button type="submit" onclick="save()" value="Save">Save</button>
+        </div>
+    </div>
+</div>
+</body>

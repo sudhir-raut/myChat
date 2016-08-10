@@ -1,0 +1,25 @@
+var socket = io.connect("127.0.0.1:2222");
+var userName;
+var password;
+function signup(){
+    //socket.emit("sign up");
+    window.open('html/signup.html','_self');
+}
+function login() {
+    userName = document.getElementById("username").value;
+    password = document.getElementById("pwd").value;
+    socket.emit("loginE", userName, password);
+    console.log(userName + " Connected");
+
+    socket.on("alert",function(alertMessage,ret_val){
+        if(ret_val == 1) {
+            //socket.emit('uname',userName);
+            window.open('html/home.html', '_self');
+
+        }
+        else {
+            alert(alertMessage);
+        }
+    });
+
+}

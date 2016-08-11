@@ -32,7 +32,7 @@ function sendMessage(sender,reciever){
     var reciever = document.getElementById(rId).value;
     var msg = document.getElementById(reciever).value;
     document.getElementById(reciever).value="";
-    document.getElementById(socketIdR).innerHTML = ('<div class="chat">' + "<b style='color: darkgreen'>" +"Me : "+ msg + "</b>" + document.getElementById(socketIdR).innerHTML + '</div>');
+    document.getElementById(socketIdR).innerHTML = ('<div class="chat" style="color: darkgreen">' + "<b style='color: darkgreen'>" +"Me : </b>"+ msg + document.getElementById(socketIdR).innerHTML + '</div>');
     socket.emit("send message", socketIdS, socketIdR, myName,reciever,msg);
 
 }
@@ -101,10 +101,10 @@ socket.on("send socket id", function (socketIdR, socketIdS, reciever,chatHistory
         for (var i = (chatHistory.length - msgs2Display); i < chatHistory.length; i++) {
             console.log(chatHistory[i].message);
             if (chatHistory[i].from == myName) {
-                document.getElementById(socketIdR).innerHTML = ("<div class='chat'><b style='color: darkgreen'>" + "Me : " + chatHistory[i].message + "</b>" + document.getElementById(socketIdR).innerHTML + "</div>");
+                document.getElementById(socketIdR).innerHTML = ("<div class='chat' style='color: darkgreen'><b style='color: darkgreen'>" + "Me : </b>" + chatHistory[i].message + document.getElementById(socketIdR).innerHTML + "</div>");
             }
             else {
-                document.getElementById(socketIdR).innerHTML = ("<div class='chat'><b style='color: darkred'>" + reciever + " : " + chatHistory[i].message + "</b>" + document.getElementById(socketIdR).innerHTML + "</div>");
+                document.getElementById(socketIdR).innerHTML = ("<div class='chat' style='color: darkred'><b style='color: darkred'>" + reciever + " : </b>" + chatHistory[i].message + document.getElementById(socketIdR).innerHTML + "</div>");
             }
         }
     }
@@ -145,7 +145,7 @@ socket.on("get message", function (socketIdS, socketIdR, sender, reciever,chatHi
 
 socket.on("get_message", function (recieverId, senderId, sender, msg) {
     var chatId = senderId;
-        document.getElementById(chatId).innerHTML = ('<div class="chat">' + "<b style='color: maroon'>" + sender + " : " + msg + "</b>" + document.getElementById(chatId).innerHTML + '</div>');
+        document.getElementById(chatId).innerHTML = ('<div class="chat" style="color: darkred"><b style="color: darkred">' + sender + " : </b>" + msg + document.getElementById(chatId).innerHTML + '</div>');
 });
 
 

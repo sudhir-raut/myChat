@@ -82,16 +82,16 @@ mongo.connect('mongodb://127.0.0.1:27017/data',function (err,db) {
 
 
         socket.on("send message", function (senderId, recieverId, sender,reciever, msg) {
-            var msgs;
+            var chatHistory;
             chatD.find({to:sender,from:reciever}).toArray(function (err,res) {
                 if(err) throw err;
                 else {
-                    msgs = res[0].chatMessages;
-                    //socket.emit("send socket id", socketIdR, socketIdS, reciever, msgs);
+                    chatHistory = res[0].chatMessages;
+                    //socket.emit("send socket id", socketIdR, socketIdS, reciever, chatHistory);
 
                 }
             });
-            socket.broadcast.to(recieverId).emit("get message", senderId, recieverId, sender,reciever,msgs);
+            socket.broadcast.to(recieverId).emit("get message", senderId, recieverId, sender,reciever,chatHistory);
             var date = new Date();
             var doc = {
                 from:sender,
@@ -110,7 +110,6 @@ mongo.connect('mongodb://127.0.0.1:27017/data',function (err,db) {
             for (var i = 0; i < connectedUsers.length; i++) {
                 if (connectedUsers[i] != null) {
                     if (connectedUsers[i].userName == reciever) {
-                        var flag = 0;
                         chatD.find().toArray(function (err,res) {
                             var j;
                             var messages1,messages2;
@@ -120,48 +119,48 @@ mongo.connect('mongodb://127.0.0.1:27017/data',function (err,db) {
                                 }
                             }
 
+                            var socketIdR = connectedUsers[i].sockId;
+                            var socketIdS = socket.id;
+                            var chatHistory;
 
                             if(j>=res.length){
                                 var data1 = {
                                     to:reciever,
                                     from:sender,
-                                    chatMessages:[]
+                                    chatMessages:[{from:"",message:"",time:""}]
                                 };
 
                                 var data2 = {
                                     to:sender,
                                     from:reciever,
-                                    chatMessages:[]
+                                    chatMessages:[{from:"",message:"",time:""}]
                                 };
                                 chatD.insert(data1);
                                 chatD.insert(data2);
-                                flag=1;
+                                chatHistory="";
+                                socket.emit("send socket id", socketIdR, socketIdS, reciever, chatHistory);
+                            }
+                            else {
+                                chatHistory="";
+                                chatD.find({to: reciever, from: sender}).toArray(function (err, res) {
+                                    if (err) throw err;
+                                    else {
+                                        chatHistory = res[0].chatMessages;
+                                        socket.emit("send socket id", socketIdR, socketIdS, reciever, chatHistory);
+                                    }
+                                });
+
                             }
 
                         });
 
-                        var msgs="";
-                        var socketIdR = connectedUsers[i].sockId;
-                        var socketIdS = socket.id;
-                        if(flag==1) {
-                            chatD.find({to: reciever, from: sender}).toArray(function (err, res) {
-                                if (err) throw err;
-                                else {
-                                    msgs = res[0].chatMessages;
-                                    socket.emit("send socket id", socketIdR, socketIdS, reciever, msgs);
-                                }
-                            });
-                        }
-                        else
-                        {
-                            socket.emit("send socket id", socketIdR, socketIdS, reciever, msgs);
-                        }
-                        //socket.broadcast.to(connectedUsers[i].sockId).emit("get message", socket.id, connectedUsers[i].sockId, sender,reciever);
                         break;
                     }
                 }
             }
         });
+
+
 
         socket.on("sign up", function () {
             app.get('/signup', function (req, res) {
